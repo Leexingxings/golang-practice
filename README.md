@@ -5,10 +5,10 @@
 |          GoLang           |     1.21      |  golang1.21   |
 
 1. [x] 整合`zap SugaredLogger`
-2. [ ] JWT生成与解析
+2. [ ] 生成与解析`JWT`
 3. [ ] 整合`MySQL`
 4. [ ] 整合`Redis`
 5. [ ] 整合`MQTT`
 6. [ ] 使用`Dig`依赖注入
 
-**updating...**
+**updating...*
