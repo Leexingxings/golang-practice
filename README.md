@@ -11,4 +11,4 @@
 5. [ ] 整合`MQTT`
 6. [ ] 使用`Dig`依赖注入
 
-**updating...*
+**updating...**
