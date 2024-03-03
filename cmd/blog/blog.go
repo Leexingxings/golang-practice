@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"practice/pkg/auth"
 	log "practice/pkg/logger"
 	"time"
 )
@@ -15,7 +14,6 @@ import (
 func main() {
 	router := gin.Default()
 	router.GET("/ping", func(c *gin.Context) {
-		auth.BuildJWT()
 		c.JSON(http.StatusOK, gin.H{
 			"message": "pong",
 		})
