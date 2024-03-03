@@ -3,10 +3,12 @@ package auth
 import (
 	"errors"
 	"github.com/golang-jwt/jwt/v5"
+	"practice/utils"
 	"time"
 )
 
-const NormalTokenTTL = time.Hour * 2
+const NormalAccessTokenTTL = time.Hour * 2
+const FreshTokenTTL = time.Hour * 24 * 30
 
 type CustomPayload struct {
 	UserID uint64 `json:"uid,string"`
@@ -29,6 +31,7 @@ func init() {
 // ttl 过期时间
 func BuildJWT(customPayload CustomPayload, ttl time.Duration) (string, error) {
 	commonClaims := jwt.RegisteredClaims{
+		ID:        utils.RandStr(10), // ID, 类似于盐值
 		ExpiresAt: jwt.NewNumericDate(time.Now().Add(ttl)),
 	}
 	claims := Payload{
