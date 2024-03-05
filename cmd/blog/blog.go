@@ -3,15 +3,28 @@ package main
 import (
 	"context"
 	"errors"
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"go.uber.org/dig"
 	"net/http"
 	"os"
 	"os/signal"
+	"practice/pkg/database"
 	log "practice/pkg/logger"
 	"time"
 )
 
 func main() {
+	container := dig.New()
+	fmt.Printf("%+v\n", container)
+
+	database.ConnectDB()
+	data := struct {
+		Name string
+	}{}
+	database.DB.Debug().Table("user").Find(&data)
+	fmt.Printf("%+v\n", data)
+
 	router := gin.Default()
 	router.GET("/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
