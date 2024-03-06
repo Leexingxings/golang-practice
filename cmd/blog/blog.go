@@ -14,16 +14,17 @@ import (
 	"time"
 )
 
+type user struct {
+	Id   uint64
+	Name string
+}
+
 func main() {
 	container := dig.New()
 	fmt.Printf("%+v\n", container)
 
-	database.ConnectDB()
-	data := struct {
-		Name string
-	}{}
-	database.DB.Debug().Table("user").Find(&data)
-	fmt.Printf("%+v\n", data)
+	// 初始化数据库
+	database.InitDB()
 
 	router := gin.Default()
 	router.GET("/ping", func(c *gin.Context) {

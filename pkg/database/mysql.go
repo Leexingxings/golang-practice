@@ -1,36 +1,26 @@
 package database
 
 import (
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
-	"practice/pkg/logger"
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/jmoiron/sqlx"
+	"sync"
 )
 
-var DB *gorm.DB
+var db *sqlx.DB
+var once sync.Once
 
-func ConnectDB() {
-	var database *gorm.DB
-	var err error
+// InitDB 初始化DB
+func InitDB() {
+	once.Do(func() {
+		dsn := "root:lijiaxing@tcp(127.0.0.1:3306)/blog?charset=utf8mb4&parseTime=True"
+		db = sqlx.MustConnect("mysql", dsn)
 
-	dsn := "root:lijiaxing@tcp(127.0.0.1:3306)/blog?charset=utf8mb4&parseTime=True&loc=Local"
-	database, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
-	if err != nil {
-		logger.Panic("Failed to connect database")
-	}
-	//sqlDB, err := database.DB()
-	//if err != nil {
-	//	logger.Panic("Failed to get database instance")
-	//}
-	//defer sqlDB.Close()
-	//
-	//// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
-	//sqlDB.SetMaxIdleConns(10)
-	//
-	//// SetMaxOpenConns sets the maximum number of open connections to the database.
-	//sqlDB.SetMaxOpenConns(100)
-	//
-	//// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
-	//sqlDB.SetConnMaxLifetime(time.Hour)
+		db.SetMaxOpenConns(100)
+		db.SetMaxIdleConns(50)
+	})
+}
 
-	DB = database
+// ShareBlog 获取blog库连接
+func ShareBlog() *sqlx.DB {
+	return db
 }
